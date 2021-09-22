@@ -81,6 +81,11 @@ module.exports=class GatherClientBase extends EventEmitter{
 	
 	}
 
+	_attributesRequest(task, json){
+		json.plugin="Attributes";
+		return this._request(task, json);
+	}
+
 	_gatherRequest(task, json){
 
 		json.plugin=this.config.plugin;

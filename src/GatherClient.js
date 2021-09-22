@@ -21,4 +21,13 @@ module.exports=class GatherClient extends GatherClientBase{
 
 
 
+	createProject(project){
+		return this._gatherRequest('save_project', project).then((response)=>{
+			return response.data;
+		});
+	}
+
+
+
+
 }
