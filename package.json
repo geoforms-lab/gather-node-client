@@ -1,0 +1,22 @@
+{
+  "name": "gather-node-client",
+  "version": "1.0.0",
+  "description": "node client for gather severs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickolanack/gather-node-client.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nickolanack/gather-node-client/issues"
+  },
+  "homepage": "https://github.com/nickolanack/gather-node-client#readme",
+  "dependencies": {
+    "got": "^11.8.2"
+  }
+}
