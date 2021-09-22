@@ -20,6 +20,13 @@ module.exports=class GatherClient extends GatherClientBase{
 	}
 
 
+	listArchivedProjects(){
+		return this._gatherRequest('list_archived_projects',{}).then((response)=>{
+			return response.results;
+		});
+	}
+
+
 
 	createProject(project){
 
