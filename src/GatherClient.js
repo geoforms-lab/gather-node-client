@@ -22,6 +22,23 @@ module.exports=class GatherClient extends GatherClientBase{
 
 
 	createProject(project){
+
+		if(typeof project.id!="undefined"){
+			throw "Should not have a project id: use update project";
+		}
+
+		return this._gatherRequest('save_project', project).then((response)=>{
+			return response.data;
+		});
+	}
+
+
+	updateProject(project){
+
+		if(typeof project.id!="number"||project.id<=0){
+			throw "Invalid project id";
+		}
+
 		return this._gatherRequest('save_project', project).then((response)=>{
 			return response.data;
 		});
