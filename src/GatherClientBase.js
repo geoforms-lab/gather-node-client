@@ -55,7 +55,7 @@ module.exports = class GatherClientBase extends EventEmitter {
 
 
 
-		const response = await got.post(this.config.url + 'renew', {
+		const response = await got.post(this.config.url + 'renew'+ "&iam=" + this.config.iam + "&access_token=" + this.token, {
 			form: {
 				json: JSON.stringify({
 					plugin: "Users",
