@@ -15,7 +15,7 @@ module.exports=class GatherClient extends GatherClientBase{
 
 	listProjects(){
 		return this._gatherRequest('list_projects',{}).then((response)=>{
-			return response.tags;
+			return response.results;
 		});
 	}
 
