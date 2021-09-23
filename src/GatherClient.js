@@ -2,7 +2,11 @@ const GatherClientBase=require("./GatherClientBase.js");
 
 module.exports=class GatherClient extends GatherClientBase{
 
-
+	echo(data){
+		return this._request('echo', data||{"hello":"world"}).then((response)=>{
+			return response;
+		});
+	}
 
 
 
