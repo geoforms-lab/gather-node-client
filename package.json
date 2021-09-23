@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/nickolanack/gather-node-client#readme",
   "dependencies": {
-    "got": "^11.8.2"
+    "got": "^11.8.2",
+     "push-node-socket-io-client": "git+https://github.com/nickolanack/push-node-socket-io-client.git"
   }
 }

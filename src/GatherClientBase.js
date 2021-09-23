@@ -1,5 +1,6 @@
 const EventEmitter = require("events");
 const got = require("got");
+const SocketIO=require("push-node-socket-io-client");
 
 
 module.exports = class GatherClientBase extends EventEmitter {
@@ -160,17 +161,59 @@ module.exports = class GatherClientBase extends EventEmitter {
 
 
 	_attributesRequest(task, json) {
+
 		json.plugin = "Attributes";
 		return this._request(task, json);
+
 	}
 
 	_gatherRequest(task, json) {
 
 		json.plugin = this.config.plugin;
-
 		return this._request(task, json);
 
 	}
 
+	_messageRequest(task, json) {
+
+		if(typeof this.config.messagePlugin =="undefined"){
+			throw "Requires config.messagePlugin";
+		}
+
+		json.plugin = this.config.discussionPlugin;
+		return this._request(task, json);
+
+	}
+
+	getSocketInfo(){
+		return this._request('get_socket_info',{
+			plugin :"MessageSystem"
+		}).then((response)=>{
+			return response;
+		});
+	}
+
+
+	subscribe(channel, event, cb){
+
+		if(!this._socketclient){
+
+			this.getSocketInfo().then((socketInfo)=>{
+				console.log(socketInfo);
+				this._socketclient=new SocketIO.SocketIOClient(socketInfo.socketUrl);
+		
+			});
+			
+		}
+
+	}
+
+
+
+
 
 }
+
+
+
+
