@@ -19,6 +19,9 @@ module.exports = class GatherClientBase extends EventEmitter {
 		this._isRenewing=false;
 		this.renewAt = -1;
 		this.config = config;
+
+		this._channelPrefix='';
+		
 		this._connect(credentials, cb);
 
 
@@ -159,7 +162,6 @@ module.exports = class GatherClientBase extends EventEmitter {
 
 	}
 
-
 	_attributesRequest(task, json) {
 
 		json.plugin = "Attributes";
@@ -180,13 +182,13 @@ module.exports = class GatherClientBase extends EventEmitter {
 			throw "Requires config.messagePlugin";
 		}
 
-		json.plugin = this.config.discussionPlugin;
+		json.plugin = this.config.messagePlugin;
 		return this._request(task, json);
 
 	}
 
 	getSocketInfo(){
-		return this._request('get_socket_info',{
+		return this._request('get_socket_info', {
 			plugin :"MessageSystem"
 		}).then((response)=>{
 			return response;
@@ -196,15 +198,45 @@ module.exports = class GatherClientBase extends EventEmitter {
 
 	subscribe(channel, event, cb){
 
-		if(!this._socketclient){
+		if((!this._socketclient)&&(!this._isConnectingSocket)){
 
+			this._isConnectingSocket=true;
 			this.getSocketInfo().then((socketInfo)=>{
 				console.log(socketInfo);
-				this._socketclient=new SocketIO.SocketIOClient(socketInfo.socketUrl);
-		
+
+				this._channelPrefix=socketInfo.channelPrefix;
+
+
+				this._socketclient=new SocketIO.SocketIOClient(socketInfo.server);
+				this._socketclient.connect({
+					"appId":socketInfo.appId,
+					"username":this.config.iam
+				}, (success)=>{
+
+					if(!success){
+						throw 'Failed to connect to socket server';
+					}
+
+					this.emit('socketConnected');
+					this._isConnectingSocket=false;
+					this._socketclient.subscribe(this._channelPrefix+channel, event, cb);
+
+				});
 			});
+
+
+			return;
 			
 		}
+
+		if(!this._socketclient){
+			this.once('socketConnected', function(){
+				this._socketclient.subscribe(this._channelPrefix+channel, event, cb);
+			});
+			return;
+		}
+
+		this._socketclient.subscribe(this._channelPrefix+channel, event, cb);
 
 	}
 

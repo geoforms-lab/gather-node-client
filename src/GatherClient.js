@@ -61,7 +61,26 @@ module.exports=class GatherClient extends GatherClientBase{
 
 
 
+	postChat(id, messageText, metadata){
 
+		id=parseInt(id);
+		if(id<=0){
+			throw "Invalid chat id";
+		}
+
+		let options={
+			discussion:id,
+			text:messageText
+		};
+		if(typeof metadata!="undefined"){
+			options.metadata=metadata;
+		}
+
+		return this._messageRequest('submit_post', options).then((response)=>{
+			return response;
+		});
+
+	}
 
 
 
