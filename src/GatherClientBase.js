@@ -30,6 +30,15 @@ module.exports = class GatherClientBase extends EventEmitter {
 
 	_connect(credentials, cb) {
 
+
+		if(!credentials){
+			this._isGuest=true;
+			cb();
+			return;
+
+		}
+
+		this._isGuest=false;
 		this._login(credentials).then((token) => {
 			cb();
 		});
@@ -62,7 +71,11 @@ module.exports = class GatherClientBase extends EventEmitter {
 	}
 
 	_needsRenew() {
-		return this.renewAt - (new Date()).getTime() < 60;
+		return (!this._isGuest)&&this.renewAt - (new Date()).getTime() < 60;
+	}
+
+	_accessToken() {
+		return this._isGuest?"&access_token=" + this.token:"";
 	}
 
 	async _renew() {
@@ -70,7 +83,7 @@ module.exports = class GatherClientBase extends EventEmitter {
 
 		this._isRenewing=true;
 		//console.log('renew');
-		const response = await got.post(this.config.url + 'renew'+ "&iam=" + this.config.iam + "&access_token=" + this.token, {
+		const response = await got.post(this.config.url + 'renew'+ "&iam=" + this.config.iam + this._accessToken(), {
 			form: {
 				json: JSON.stringify({
 					plugin: "Users",
@@ -98,7 +111,7 @@ module.exports = class GatherClientBase extends EventEmitter {
 		// }).json()
 		// 
 		
-		const response = await this._post(this.config.url + task + "&iam=" + this.config.iam + "&access_token=" + this.token, {
+		const response = await this._post(this.config.url + task + "&iam=" + this.config.iam + this._accessToken(), {
 			form: {
 				json: JSON.stringify(json)
 			}

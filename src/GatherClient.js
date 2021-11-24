@@ -9,6 +9,14 @@ module.exports=class GatherClient extends GatherClientBase{
 	}
 
 
+	getConfig(){
+		
+		return this._gatherRequest('get_dashboard_config',{}).then((response)=>{
+			return response.parameters;
+		});
+	}
+
+
 
 	listCategories(){
 		return this._gatherRequest('list_tags',{}).then((response)=>{
@@ -56,7 +64,23 @@ module.exports=class GatherClient extends GatherClientBase{
 	}
 
 
+	archiveProject(project){
 
+		var id=typeof project.id=='number'?project.id:project;
+
+
+		if(typeof id!="number"||id<=0){
+			throw "Invalid project id";
+		}
+
+		return this._gatherRequest('set_proposal_status', {
+			id:id,
+			status:'archived'
+		}).then((response)=>{
+			return response.data;
+		});
+		
+	}
 	
 
 
