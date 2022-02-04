@@ -38,7 +38,23 @@ module.exports=class GatherClient extends GatherClientBase{
 		});
 	}
 
+	createGuestProject(project, email, callback){
 
+		if(typeof project.id!="undefined"){
+			throw "Should not have a project id: use update project";
+		}
+
+		return this._gatherRequest('save_guest_proposal', project).then((response)=>{
+			return this._gatherRequest('save_guest_proposal', {
+
+				email:email,
+				token:response.token
+
+				}).then((response)=>{
+
+			});
+		})
+	}
 
 	createProject(project){
 

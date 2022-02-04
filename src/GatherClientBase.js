@@ -33,14 +33,14 @@ module.exports = class GatherClientBase extends EventEmitter {
 
 		if(!credentials){
 			this._isGuest=true;
-			cb();
+			cb(this);
 			return;
 
 		}
 
 		this._isGuest=false;
 		this._login(credentials).then((token) => {
-			cb();
+			cb(this);
 		});
 
 	}
@@ -75,7 +75,7 @@ module.exports = class GatherClientBase extends EventEmitter {
 	}
 
 	_accessToken() {
-		return this._isGuest?"&access_token=" + this.token:"";
+		return this._isGuest?"":"&access_token=" + this.token;
 	}
 
 	async _renew() {
