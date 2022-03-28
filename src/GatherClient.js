@@ -67,11 +67,34 @@ module.exports=class GatherClient extends GatherClientBase{
 		});
 	}
 
+	updateProjectMetadata(project){
+
+
+		if(typeof project.id!="number"){
+			throw "Invalid project id: not a number";
+		}
+
+		if(project.id<=0){
+			throw "Invalid project id <= 0";
+		}
+
+		return this._gatherRequest('save_project_metadata', project).then((response)=>{
+			return response.data;
+		});
+
+
+
+	}
+
 
 	updateProject(project){
 
-		if(typeof project.id!="number"||project.id<=0){
-			throw "Invalid project id";
+		if(typeof project.id!="number"){
+			throw "Invalid project id: not a number";
+		}
+
+		if(project.id<=0){
+			throw "Invalid project id <= 0";
 		}
 
 		return this._gatherRequest('save_project', project).then((response)=>{
