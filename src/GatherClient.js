@@ -116,7 +116,7 @@ module.exports=class GatherClient extends GatherClientBase{
 			id:id,
 			status:'archived'
 		}).then((response)=>{
-			return response.data;
+			return response;
 		});
 		
 	}
