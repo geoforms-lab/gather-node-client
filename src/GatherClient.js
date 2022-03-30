@@ -98,6 +98,23 @@ module.exports=class GatherClient extends GatherClientBase{
 		});
 	}
 
+	removeCatetory(id){
+
+
+		if(typeof id!="number"){
+			throw "Invalid category id: not a number";
+		}
+
+		if(id<=0){
+			throw "Invalid category id <= 0";
+		}	
+
+
+		return this._gatherRequest('remove_tag', {id:id}).then((response)=>{
+			return true;
+		});
+	}
+
 	updateProjectMetadata(project){
 
 
