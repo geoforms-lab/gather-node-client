@@ -98,7 +98,7 @@ module.exports=class GatherClient extends GatherClientBase{
 		});
 	}
 
-	removeCatetory(id){
+	removeCategory(id){
 
 
 		if(typeof id!="number"){
