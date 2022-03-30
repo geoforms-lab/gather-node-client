@@ -67,6 +67,37 @@ module.exports=class GatherClient extends GatherClientBase{
 		});
 	}
 
+
+	createCategory(category){
+
+
+		if(typeof category.id!="undefined"){
+			throw "Should not have a category id: use update updateCategory";
+		}
+
+		return this._gatherRequest('save_tag', category).then((response)=>{
+			return response.tag;
+		});
+	}
+
+	updateCategory(category){
+
+
+		if(typeof category.id!="number"){
+			throw "Invalid category id: not a number";
+		}
+
+		if(category.id<=0){
+			throw "Invalid category id <= 0";
+		}	
+
+
+
+		return this._gatherRequest('save_tag', category).then((response)=>{
+			return response.tag;
+		});
+	}
+
 	updateProjectMetadata(project){
 
 
